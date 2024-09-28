@@ -1,0 +1,37 @@
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: adm
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: login_app
+    networks:
+      - login-app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: login-app
+    networks:
+      - login-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+
+volumes:
+  postgres_data:
+
+networks:
+  login-app:
+    driver: bridge

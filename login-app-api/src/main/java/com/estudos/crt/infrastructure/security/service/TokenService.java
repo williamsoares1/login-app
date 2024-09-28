@@ -24,10 +24,10 @@ public class TokenService {
     private String secretKey;
 
     @Value("${auth.jwt.token.expiration}")
-    private Integer hoursTokenExpiration;
+    private Integer daysTokenExpiration;
 
     @Value("${auth.jwt.refresh-token.expiration}")
-    private Integer hoursRefreshTokenExpiration;
+    private Integer daysRefreshTokenExpiration;
 
     public String generateToken(Usuario usuario, Integer expiration) {
         try {
@@ -46,8 +46,8 @@ public class TokenService {
 
     public TokenDTO obterToken(Usuario usuario) {
         return TokenDTO.builder()
-                .token(generateToken(usuario, hoursTokenExpiration))
-                .refreshToken(generateToken(usuario, hoursRefreshTokenExpiration))
+                .token(generateToken(usuario, daysTokenExpiration))
+                .refreshToken(generateToken(usuario, daysRefreshTokenExpiration))
                 .build();
     }
 
@@ -57,12 +57,12 @@ public class TokenService {
         Cookie accessTokenCookie = new Cookie("accessToken", tokens.token());
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(hoursTokenExpiration * 60 * 60);
+        accessTokenCookie.setMaxAge(daysTokenExpiration * 60 * 60 * 24);
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", tokens.refreshToken());
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/auth/refresh-token");
-        refreshTokenCookie.setMaxAge(hoursRefreshTokenExpiration * 60 * 60);
+        refreshTokenCookie.setMaxAge(daysRefreshTokenExpiration * 60 * 60 * 24);
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
@@ -83,7 +83,7 @@ public class TokenService {
     }
 
     private Instant expirationDate(Integer expiration) {
-        return LocalDateTime.now().plusHours(expiration).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusDays(expiration).toInstant(ZoneOffset.of("-03:00"));
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.estudos.crt.entities.Usuario;
+import com.estudos.crt.entities.ENUM.CARGO;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -19,9 +20,9 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (usuario.getCargo() == "ADM")
+        if (usuario.getCargo() == CARGO.ADM)
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        else if (usuario.getCargo() == "VENDEDOR")
+        else if (usuario.getCargo() == CARGO.USUARIO)
             return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         else
             return List.of(new SimpleGrantedAuthority("ROLE_COMMON"));

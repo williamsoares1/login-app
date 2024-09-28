@@ -1,0 +1,10 @@
+div.input_container > input.input_box{
+    border: 2px solid var(--laranja);
+    background-clip: content-box;
+    background: transparent;
+    color: var(--branco);
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 3px;
+}
