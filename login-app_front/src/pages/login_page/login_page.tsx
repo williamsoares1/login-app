@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react'
-import '../../css/pages/login-page.css'
+import { useEffect, useState } from 'react';
 import { FaUserAstronaut } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 import { Input_component } from '../../component/input/Input_component';
 import { Password_component } from '../../component/password_input/Password_input';
-import { AuthContext, useUser } from '../../context/auth/AuthContext';
+import { useUser } from '../../context/auth/AuthContext';
+import '../../css/pages/login-page.css';
 import { login_api } from '../../service/login_api/login_api';
-import { useNavigate } from 'react-router-dom';
 
 export const Login_page = () => {
   const navigate = useNavigate();

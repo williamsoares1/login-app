@@ -5,6 +5,6 @@ import AppRoutes from './routes/Routes.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AppRoutes/>
+      <AppRoutes/>
   </React.StrictMode>,
 )
