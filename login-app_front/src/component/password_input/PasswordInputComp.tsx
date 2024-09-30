@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import "../../css/components/password_input_component.css";
-import "../../css/components/input_component_common.css";
+import "../../css/components/passwordInputComp.css";
+import "../../css/components/inputCompCommon.css";
 import { IoEyeOff } from "react-icons/io5";
 import { IoEyeSharp } from "react-icons/io5";
+import { InputCompProps } from '../../@types/InputCompProps';
 
-
-export const Password_component = ({value, setValue, placeholder, max, label, type}) => {
+export const Password_input = ({value, setValue, placeholder, max, label, type}: InputCompProps) => {
     const [visible, setVisible] = useState(false);
 
-    const handleVisibilityClick = (e) => {
+    const handleVisibilityClick = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         setVisible(!visible);

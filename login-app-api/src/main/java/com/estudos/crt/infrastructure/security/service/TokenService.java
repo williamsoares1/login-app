@@ -24,10 +24,10 @@ public class TokenService {
     private String secretKey;
 
     @Value("${auth.jwt.token.expiration}")
-    private Integer daysTokenExpiration;
+    private Integer tokenExpiration;
 
     @Value("${auth.jwt.refresh-token.expiration}")
-    private Integer daysRefreshTokenExpiration;
+    private Integer RefreshTokenExpiration;
 
     public String generateToken(Usuario usuario, Integer expiration) {
         try {
@@ -46,8 +46,8 @@ public class TokenService {
 
     public TokenDTO obterToken(Usuario usuario) {
         return TokenDTO.builder()
-                .token(generateToken(usuario, daysTokenExpiration))
-                .refreshToken(generateToken(usuario, daysRefreshTokenExpiration))
+                .token(generateToken(usuario, tokenExpiration))
+                .refreshToken(generateToken(usuario, RefreshTokenExpiration))
                 .build();
     }
 
@@ -57,12 +57,27 @@ public class TokenService {
         Cookie accessTokenCookie = new Cookie("accessToken", tokens.token());
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(daysTokenExpiration * 60 * 60 * 24);
+        accessTokenCookie.setMaxAge(tokenExpiration * 60 * 60 * 24);
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", tokens.refreshToken());
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/auth/refresh-token");
-        refreshTokenCookie.setMaxAge(daysRefreshTokenExpiration * 60 * 60 * 24);
+        refreshTokenCookie.setMaxAge(RefreshTokenExpiration * 60 * 60 * 24);
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+    }
+
+    public void logout(HttpServletResponse response) {
+        Cookie accessTokenCookie = new Cookie("accessToken", "");
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(0);
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", "");
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/auth/refresh-token");
+        refreshTokenCookie.setMaxAge(0);
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
@@ -83,7 +98,7 @@ public class TokenService {
     }
 
     private Instant expirationDate(Integer expiration) {
-        return LocalDateTime.now().plusDays(expiration).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusMinutes(expiration).toInstant(ZoneOffset.of("-03:00"));
     }
 
 }

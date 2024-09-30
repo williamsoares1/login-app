@@ -30,6 +30,12 @@ public class UsuarioController {
         return ResponseEntity.of(service.login(dto, request, response));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response){
+        service.logout(response);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/refresh-token")
     public ResponseEntity<UsuarioResponseDTO> refreshToken(HttpServletRequest request, HttpServletResponse response){
         return ResponseEntity.of(service.obterRefreshToken(request, response));

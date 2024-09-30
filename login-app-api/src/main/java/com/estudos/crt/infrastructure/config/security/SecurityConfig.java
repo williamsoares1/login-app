@@ -28,8 +28,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/find").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/refresh-token").authenticated()
                         .requestMatchers(HttpMethod.GET, "/auth/teste").hasAuthority("ROLE_ADMIN")
                         .anyRequest().permitAll())

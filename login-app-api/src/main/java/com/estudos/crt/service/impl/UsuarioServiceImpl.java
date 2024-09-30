@@ -66,6 +66,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public void logout(HttpServletResponse response){
+        tokenService.logout(response);
+    }
+
+    @Override
     public Optional<String> register(UsuarioRegisterRequestDTO dto) {
         String passaword = dto.senha();
         String encryptedPassword = new BCryptPasswordEncoder().encode(passaword);

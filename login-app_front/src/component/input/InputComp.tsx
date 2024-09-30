@@ -1,8 +1,8 @@
-import React from 'react';
-import "../../css/components/default_input_component.css";
-import "../../css/components/input_component_common.css";
+import "../../css/components/inputComp.css";
+import "../../css/components/inputCompCommon.css";
+import { InputCompProps } from '../../@types/InputCompProps';
 
-export const Input_component = ({value, setValue, placeholder, max, label, type}) => {
+export const Input_component = ({value, setValue, placeholder, max, label, type}: InputCompProps) => {
     return (
         <div className='input_container'>
             <label htmlFor={label}>{label}</label>

@@ -1,9 +1,10 @@
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { useCallback } from "react";
+import { Engine, IOptions, RecursivePartial } from "tsparticles-engine";
 
 const Backgroud = () => {
-  const options = {
+  const options: RecursivePartial<IOptions> = {
     particles: {
       number: {
         value: 300,
@@ -38,7 +39,7 @@ const Backgroud = () => {
     }
   };
 
-  const particlesInit = useCallback(async (engine) => {
+  const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
   }, []);
 
