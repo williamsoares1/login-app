@@ -1,4 +1,4 @@
-package com.estudos.crt.infrastructure.config.security;
+package com.estudos.crt.infrastructure.security;
 
 import java.io.IOException;
 

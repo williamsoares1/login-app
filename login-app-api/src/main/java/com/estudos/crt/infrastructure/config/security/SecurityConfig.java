@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.estudos.crt.infrastructure.security.SecurityFilter;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,14 +29,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/logout",
+                                "/swagger-ui.html")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/refresh-token").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/auth/session").authenticated()
                         .requestMatchers(HttpMethod.GET, "/auth/teste").hasAuthority("ROLE_ADMIN")
                         .anyRequest().permitAll())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                // .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+                // .headers(headers -> headers.frameOptions(frameOptions ->
+                // frameOptions.disable()))
                 .build();
     };
 

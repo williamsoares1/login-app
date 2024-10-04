@@ -1,104 +1,10 @@
 package com.estudos.crt.infrastructure.security.service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.estudos.crt.entities.Usuario;
 import com.estudos.crt.infrastructure.security.dtos.TokenDTO;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-
-@Service
-public class TokenService {
-
-    @Value("${auth.jtw.token.secret}")
-    private String secretKey;
-
-    @Value("${auth.jwt.token.expiration}")
-    private Integer tokenExpiration;
-
-    @Value("${auth.jwt.refresh-token.expiration}")
-    private Integer RefreshTokenExpiration;
-
-    public String generateToken(Usuario usuario, Integer expiration) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
-
-            return JWT.create()
-                    .withIssuer("login-app")
-                    .withSubject(usuario.getEmail())
-                    .withExpiresAt(expirationDate(expiration))
-                    .sign(algorithm);
-
-        } catch (JWTCreationException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
-        }
-    }
-
-    public TokenDTO obterToken(Usuario usuario) {
-        return TokenDTO.builder()
-                .token(generateToken(usuario, tokenExpiration))
-                .refreshToken(generateToken(usuario, RefreshTokenExpiration))
-                .build();
-    }
-
-    public void salvarTokenCookie(Usuario usuario, HttpServletResponse response) {
-        TokenDTO tokens = obterToken(usuario);
-
-        Cookie accessTokenCookie = new Cookie("accessToken", tokens.token());
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(tokenExpiration * 60 * 60 * 24);
-
-        Cookie refreshTokenCookie = new Cookie("refreshToken", tokens.refreshToken());
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setPath("/auth/refresh-token");
-        refreshTokenCookie.setMaxAge(RefreshTokenExpiration * 60 * 60 * 24);
-
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
-    }
-
-    public void logout(HttpServletResponse response) {
-        Cookie accessTokenCookie = new Cookie("accessToken", "");
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(0);
-
-        Cookie refreshTokenCookie = new Cookie("refreshToken", "");
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setPath("/auth/refresh-token");
-        refreshTokenCookie.setMaxAge(0);
-
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
-    }
-
-    public String validateToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
-
-            return JWT.require(algorithm)
-                    .withIssuer("login-app")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (JWTVerificationException e) {
-            return null;
-        }
-    }
-
-    private Instant expirationDate(Integer expiration) {
-        return LocalDateTime.now().plusMinutes(expiration).toInstant(ZoneOffset.of("-03:00"));
-    }
-
+public interface TokenService {
+    String generateToken(Usuario usuario, Integer expiration);
+    TokenDTO obterTokens(Usuario usuario);
+    String validateToken(String token);
 }

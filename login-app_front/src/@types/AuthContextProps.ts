@@ -4,7 +4,8 @@ export type AuthContextProps = {
     refresh: Function, 
     login: Function, 
     testeAPI: Function,
-    logout: Function
+    logout: Function,
+    register: Function
 }
 
 export type User = {
@@ -17,4 +18,11 @@ export type User = {
 export type LoginObject = {
     email: string,
     senha: string
+}
+
+export type RegisterObject = {
+    nome: string,
+    email: string,
+    senha: string,
+    cargo: string
 }

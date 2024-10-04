@@ -20,7 +20,7 @@ export const Password_input = ({value, setValue, placeholder, max, label, type}:
             <label htmlFor={label}>{label}</label>
             <div className='input_box'>
                 <input id={label} type={visible ? "text" : type} value={value} placeholder={placeholder} maxLength={max} onChange={(e) => setValue(e.target.value)}/>
-                <button onClick={(e) => handleVisibilityClick(e)}>{visible ? <IoEyeOff color='var(--branco)' size={18} /> : <IoEyeSharp color='var(--branco)' size={18} />
+                <button onClick={(e) => handleVisibilityClick(e)}>{visible ? <IoEyeOff color='var(--branco)' size={16} /> : <IoEyeSharp color='var(--branco)' size={16} />
             }</button>
             </div>
         </div>

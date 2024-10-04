@@ -3,14 +3,16 @@ import { FaUserAstronaut } from "react-icons/fa";
 import { Input_component } from '../../component/input/InputComp';
 import { Password_input } from '../../component/password_input/PasswordInputComp';
 import { useUser } from '../../context/auth/AuthContext';
-import '../../css/pages/loginPage.css';
+import '../../css/formPages.css';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>();
   const [senha, setSenha] = useState<string>();
   const loginObject = {email, senha};
 
-  const {refresh, login, testeAPI} = useUser();
+  const {refresh, login} = useUser();
 
   useEffect(() => {
     refresh("/home");
@@ -22,10 +24,8 @@ export const LoginPage = () => {
     login(loginObject)
   }
 
-  const handleTeste = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    testeAPI()
+  const registerPageRedirect = () => {
+    navigate("/register");
   }
 
   return (
@@ -38,11 +38,13 @@ export const LoginPage = () => {
 
         <section>
           <form onSubmit={handleSubmit}>
-            <Input_component max={40} placeholder={"ex: user@email.com"} type={"text"} value={email} setValue={setEmail} label={"email"}/>
-            <Password_input max={12} placeholder={"password"} type={"password"} value={senha} setValue={setSenha} label={"senha"}/>
+            <Input_component max={40} placeholder={"ex: usuario@email.com"} type={"text"} value={email} setValue={setEmail} label={"email"}/>
+            <Password_input max={12} placeholder={"senha"} type={"password"} value={senha} setValue={setSenha} label={"senha"}/>
             <button type='submit'>SUBMIT</button>
-            <button onClick={handleTeste}>TESTE</button>
           </form>
+          <div className='register'>
+            <h2>Não possui uma conta? <span onClick={registerPageRedirect}>Registrar-se</span></h2>
+          </div>
         </section>
       </main>
     </>

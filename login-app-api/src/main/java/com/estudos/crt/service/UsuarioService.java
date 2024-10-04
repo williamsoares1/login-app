@@ -5,17 +5,16 @@ import java.util.Optional;
 import com.estudos.crt.dtos.request.UsuarioLoginRequestDTO;
 import com.estudos.crt.dtos.request.UsuarioRegisterRequestDTO;
 import com.estudos.crt.dtos.response.UsuarioResponseDTO;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.estudos.crt.entities.Usuario;
 
 public interface UsuarioService {
-    Optional<UsuarioResponseDTO> login(UsuarioLoginRequestDTO dto, HttpServletRequest request,
-            HttpServletResponse response);
-    
-    void logout(HttpServletResponse response);
+    Optional<UsuarioResponseDTO> login(UsuarioLoginRequestDTO dto);
 
     Optional<String> register(UsuarioRegisterRequestDTO dto);
 
-    Optional<UsuarioResponseDTO> obterRefreshToken(HttpServletRequest request, HttpServletResponse response);
+    void refreshToken();
+
+    void salvarTokens(Usuario usuario);
+
+    void logout();
 }

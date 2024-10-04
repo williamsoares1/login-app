@@ -12,13 +12,13 @@ export const Home = () => {
         e.preventDefault();
     
         testeAPI()
-    }
+    };
 
     const handleLogout = async (e: React.FormEvent) => {
         e.preventDefault();
     
         logout()
-    }
+    };
 
     return (
         <>
@@ -26,5 +26,5 @@ export const Home = () => {
             <button onClick={handleTeste}>TESTE</button>
             <button onClick={handleLogout}>LOGOUT</button>
         </>
-    )
+    );
 }

@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 import { login_api } from '../../service/login_api/login_api';
 import { useNavigate } from 'react-router-dom';
-import { AuthContextProps, LoginObject, User } from '../../@types/AuthContextProps';
+import { AuthContextProps, LoginObject, RegisterObject, User } from '../../@types/AuthContextProps';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
@@ -14,6 +14,16 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
             const response = await login_api.post("/auth/refresh-token");
             setUser(response.data);
             pagePath && navigate(pagePath);
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const register = async (registerObject: RegisterObject) => {
+        try {
+            const response = await login_api.post("/auth/register", registerObject);
+            setUser(response.data);
+            navigate("/");
         } catch (error) {
             console.log(error)
         }
@@ -48,8 +58,14 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
         }
     };
 
+    const session = async () => {
+        try{
+            const response = await login_api.get
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{user, setUser, refresh, login, testeAPI, logout}}>
+        <AuthContext.Provider value={{user, setUser, refresh, login, testeAPI, logout, register}}>
             {children}
         </AuthContext.Provider>
     );

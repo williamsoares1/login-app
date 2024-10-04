@@ -14,13 +14,24 @@ const Backgroud = () => {
         }
       },
       color: {
-        value: "#fff"
+        value: "#fff",
+        animation: {
+          enable: true,
+          speed: 20,
+          sync: false
+        }
       },
       shape: {
         type: "circle"
       },
       opacity: {
-        value: { min: 0.3, max: 1}
+        value: { min: 0.3, max: 1},
+        animation: {
+          enable: true,
+          speed: 1,
+          minimumValue: 0.3,
+          sync: false
+        }
       },
       size: {
         value: { min: 0.7, max: 1 }
