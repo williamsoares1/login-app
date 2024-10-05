@@ -3,6 +3,7 @@ import { useUser } from '../../context/auth/AuthContext';
 import { FaUserAstronaut } from 'react-icons/fa';
 import { Input_component } from '../../component/input/InputComp';
 import '../../css/formPages.css';
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterPage = () => {
     const [nome, setNome] = useState();
@@ -10,6 +11,7 @@ export const RegisterPage = () => {
     const [senha, setSenha] = useState();
     const [cargo, setCargo] = useState();
     const {register} = useUser();
+    const navigate = useNavigate();
 
     const registerObject = {
         nome,
@@ -39,6 +41,9 @@ export const RegisterPage = () => {
                     <Input_component max={12} placeholder={"ADM ou USUARIO"} type={"text"} value={cargo} setValue={setCargo} label={"cargo"}/>
                     <button type='submit'>SUBMIT</button>
                 </form>
+                <div className='redirect'>
+                    <h2>Já possui uma conta? <span onClick={() => navigate("/")}>Login</span></h2>
+                </div>
             </section>
         </main>
     </>

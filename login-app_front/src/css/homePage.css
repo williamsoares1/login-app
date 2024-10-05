@@ -1,0 +1,44 @@
+.homeContainer {
+  background: transparent;
+  color: var(--branco);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  width: 250px;
+}
+
+.homeButtonsContainer{
+    display: flex;
+    gap: 10px;
+}
+
+.testeButton,
+.logoutButton {
+  width: 100%;
+  border: 1px solid transparent;
+  font-size: 1rem;
+  padding: 5px 0;
+  transition: all .2s ease-in-out;
+  cursor: pointer;
+}
+
+.testeButton {
+  background: var(--laranja);
+  color: var(--preto_1);
+}
+
+.testeButton:hover {
+  background: var(--cinza_3);
+  transition: all .2s ease-in-out;
+}
+
+.logoutButton {
+  background: var(--bege);
+  color: var(--preto_1);
+}
+
+.logoutButton:hover {
+  background: var(--cinza_3);
+  transition: all .2s ease-in-out;
+}

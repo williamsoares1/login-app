@@ -52,18 +52,14 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String validateToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
+    public String validateToken(String token) throws JWTVerificationException {
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
-            return JWT.require(algorithm)
-                    .withIssuer("login-app")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (JWTVerificationException e) {
-            return null;
-        }
+        return JWT.require(algorithm)
+                .withIssuer("login-app")
+                .build()
+                .verify(token)
+                .getSubject();
     }
 
     private Instant expirationDate(Integer expiration) {

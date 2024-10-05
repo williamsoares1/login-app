@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -20,7 +21,6 @@ import com.estudos.crt.infrastructure.security.dtos.TokenDTO;
 import com.estudos.crt.infrastructure.security.service.TokenService;
 import com.estudos.crt.infrastructure.security.service.impl.UserDetailsImpl;
 import com.estudos.crt.repositories.UsuarioRepository;
-import com.estudos.crt.service.ServletResponseService;
 import com.estudos.crt.service.SessionService;
 import com.estudos.crt.service.UsuarioService;
 import com.estudos.crt.util.mapper.MapperS;
@@ -46,9 +46,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private SessionService sessionService;
 
-    @Autowired
-    private ServletResponseService responseService;
-
     @Value("${auth.jwt.token.expiration}")
     private Integer tokenExpiration;
 
@@ -64,6 +61,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
             Usuario usuario = repository.findByEmail(userDetails.getUsername());
+
             if (usuario == null) {
                 throw new RuntimeException("Usuário não encontrado para o email fornecido.");
             }
@@ -93,23 +91,26 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void refreshToken() {
+    public void refreshToken() throws NotFoundException {
         String refreshToken = (String) sessionService.getAttribute("refreshToken");
 
-        if (refreshToken != null) {
-            var subject = tokenService.validateToken(refreshToken);
-
-            Usuario usuario = repository.findByEmail(subject);
-            if (usuario == null) {
-                throw new RuntimeException("Usuário não encontrado para o token fornecido.");
-            }
-
-            UserDetails userDetails = new UserDetailsImpl(usuario);
-            var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-            salvarTokens(usuario);
+        if (refreshToken == null) {
+            throw new RuntimeException("Refresh token não encontrado na sessão.");
         }
+        
+        var subject = tokenService.validateToken(refreshToken);
+
+        Usuario usuario = repository.findByEmail(subject);
+
+        if (usuario == null) {
+            throw new RuntimeException("Usuário não encontrado para o token fornecido.");
+        }
+
+        UserDetails userDetails = new UserDetailsImpl(usuario);
+        var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        salvarTokens(usuario);
     }
 
     @Override
@@ -143,7 +144,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
         cookie.setPath(path);
-        responseService.addCookie(cookie);
+        sessionService.addCookie(cookie);
     }
 
 }

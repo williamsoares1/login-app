@@ -29,12 +29,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/auth/session").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/logout",
                                 "/swagger-ui.html")
                         .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/auth/session").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/auth/teste").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/interceptor").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/teste").hasAuthority("ROLE_ADMIN")
                         .anyRequest().permitAll())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 // .headers(headers -> headers.frameOptions(frameOptions ->

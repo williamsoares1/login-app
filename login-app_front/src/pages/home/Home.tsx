@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
 import { useUser } from '../../context/auth/AuthContext';
+import { InterceptorComp } from '../../service/login_api/intercptor';
+import "../../css/homePage.css"
 
 export const Home = () => {
-    const {user, refresh, testeAPI, logout} = useUser();
+    const {user, session, testeAPI, logout} = useUser();
+
+    InterceptorComp();
 
     useEffect(() => {
-        refresh("/home");
-    }, [])
+        if(!user){
+            session("/home");
+        }
+    }, []);
 
     const handleTeste = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,9 +28,14 @@ export const Home = () => {
 
     return (
         <>
-            <div style={{color: "white"}}>{user && user.nome}</div>
-            <button onClick={handleTeste}>TESTE</button>
-            <button onClick={handleLogout}>LOGOUT</button>
+            <div className='homeContainer'>
+                <h2>{user?.nome}</h2>
+                <h2>{user?.cargo}</h2>
+                <div className='homeButtonsContainer'>
+                    <button className='testeButton' onClick={handleTeste}>TESTE</button>
+                    <button className='logoutButton' onClick={handleLogout}>LOGOUT</button>
+                </div>
+            </div>
         </>
     );
 }

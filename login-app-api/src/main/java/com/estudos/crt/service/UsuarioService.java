@@ -2,6 +2,8 @@ package com.estudos.crt.service;
 
 import java.util.Optional;
 
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+
 import com.estudos.crt.dtos.request.UsuarioLoginRequestDTO;
 import com.estudos.crt.dtos.request.UsuarioRegisterRequestDTO;
 import com.estudos.crt.dtos.response.UsuarioResponseDTO;
@@ -12,7 +14,7 @@ public interface UsuarioService {
 
     Optional<String> register(UsuarioRegisterRequestDTO dto);
 
-    void refreshToken();
+    void refreshToken() throws NotFoundException;
 
     void salvarTokens(Usuario usuario);
 

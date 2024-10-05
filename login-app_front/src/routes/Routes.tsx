@@ -4,9 +4,13 @@ import { AuthProvider } from "../context/auth/AuthContext";
 import Backgroud from "../component/background/Background";
 import { LoginPage } from "../pages/loginPage/LoginPage";
 import { RegisterPage } from "../pages/registerPage/RegisterPage";
+import { InterceptorComp } from "../service/login_api/intercptor";
+
 
 const AppRoutes = () => {
-   return (
+    InterceptorComp();
+    
+    return (
        <Router>
             <Backgroud/>
             <AuthProvider>

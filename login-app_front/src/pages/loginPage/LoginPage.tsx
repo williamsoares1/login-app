@@ -12,20 +12,16 @@ export const LoginPage = () => {
   const [senha, setSenha] = useState<string>();
   const loginObject = {email, senha};
 
-  const {refresh, login} = useUser();
+  const {session, login} = useUser();
 
   useEffect(() => {
-    refresh("/home");
+    session("/home");
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     login(loginObject)
-  }
-
-  const registerPageRedirect = () => {
-    navigate("/register");
   }
 
   return (
@@ -42,8 +38,8 @@ export const LoginPage = () => {
             <Password_input max={12} placeholder={"senha"} type={"password"} value={senha} setValue={setSenha} label={"senha"}/>
             <button type='submit'>SUBMIT</button>
           </form>
-          <div className='register'>
-            <h2>Não possui uma conta? <span onClick={registerPageRedirect}>Registrar-se</span></h2>
+          <div className='redirect'>
+            <h2>Não possui uma conta? <span onClick={() => navigate("/register")}>Registrar-se</span></h2>
           </div>
         </section>
       </main>

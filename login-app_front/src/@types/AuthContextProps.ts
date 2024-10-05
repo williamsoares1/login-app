@@ -1,11 +1,11 @@
 export type AuthContextProps = {
     user?: User, 
-    setUser: Function, 
-    refresh: Function, 
+    setUser: Function,
     login: Function, 
     testeAPI: Function,
     logout: Function,
-    register: Function
+    register: Function,
+    session: Function
 }
 
 export type User = {

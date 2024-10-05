@@ -9,13 +9,13 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
     const navigate = useNavigate();
     const [user, setUser] = useState<User>();
 
-    const refresh = async (pagePath: string | null) => {
+    const session = async (pagePath: string | null) => {
         try {
-            const response = await login_api.post("/auth/refresh-token");
+            const response = await login_api.get("/auth/session");
             setUser(response.data);
             pagePath && navigate(pagePath);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     };
 
@@ -51,21 +51,15 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
 
     const testeAPI = async () => {
         try {
-            const response = await login_api.get("/auth/teste");
+            const response = await login_api.get("/teste");
             window.alert(response.data);
         } catch (error) {
-            console.log(error)
+            window.alert("Sem permissão");
         }
     };
 
-    const session = async () => {
-        try{
-            const response = await login_api.get
-        }
-    }
-
     return (
-        <AuthContext.Provider value={{user, setUser, refresh, login, testeAPI, logout, register}}>
+        <AuthContext.Provider value={{user, setUser, login, testeAPI, logout, register, session}}>
             {children}
         </AuthContext.Provider>
     );
