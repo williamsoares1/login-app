@@ -28,7 +28,7 @@ Esta aplicação foi desenvolvida a fim de aprender na prática sobre **experiê
 
 ## Caso não tenha o docker instalado
 
-  Você precisa ter PostgreSQL e Redis na sua maquina e que estejam funcionando nas respectivas portas configuradas no application-properties, ou altere as portas lá:
+  Você precisa ter PostgreSQL e Redis na sua maquina e que estejam funcionando nas respectivas portas configuradas no application-properties, ou altere as portas lá.
 
 ### Front-end
 
